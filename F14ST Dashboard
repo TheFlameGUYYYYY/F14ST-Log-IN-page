@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F1F4ST Team Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;800;900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0d12;
+    --bg-elevated:#12151d;
+    --bg-card:#141822;
+    --nitro-yellow:#ffcc00;
+    --nitro-yellow-dim:#c99e00;
+    --nitro-orange:#ff6a1a;
+    --nitro-orange-dark:#c24d10;
+    --asphalt-line:rgba(255,255,255,0.07);
+    --text:#eef0f4;
+    --muted:#848c9c;
+    --danger:#e0473a;
+    --ok:#3ecf7a;
+    --line: rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 40px),
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(255,106,26,0.14), transparent 60%),
+      radial-gradient(ellipse 700px 450px at 95% 105%, rgba(255,204,0,0.06), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Rajdhani',sans-serif;
+    font-weight:500;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:48px 20px 80px;
+  }
+  .brandmark{width:60px;height:60px;margin-bottom:10px;}
+  h1.wordmark{
+    font-family:'Orbitron',sans-serif;
+    font-weight:900;
+    font-size:30px;
+    letter-spacing:0.1em;
+    margin:0 0 4px;
+    color:#FF7F00;
+    text-shadow:0 0 22px rgba(255,127,0,0.35);
+    text-align:center;
+  }
+  .team-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--nitro-orange);
+    letter-spacing:0.08em;
+    margin-bottom:2px;
+    text-align:center;
+  }
+  .tagline{
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:8px;
+    text-align:center;
+    font-weight:600;
+  }
+  .team-link{
+    font-size:11.5px;
+    color:var(--muted);
+    margin-bottom:36px;
+    text-align:center;
+  }
+  .team-link a{color:var(--nitro-yellow-dim);text-decoration:none;}
+  .team-link a:hover{text-decoration:underline;}
+
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    width:100%;
+    max-width:400px;
+    padding:34px 32px;
+    position:relative;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,0.65);
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;
+    height:3px;
+    background:linear-gradient(90deg,var(--nitro-orange),var(--nitro-yellow),var(--nitro-orange));
+  }
+  .card h2{
+    font-family:'Orbitron',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.06em;
+    margin:0 0 6px;
+    color:var(--text);
+  }
+  .card .sub{font-size:13px;color:var(--muted);margin:0 0 24px;line-height:1.5;font-weight:500;}
+
+  label{
+    display:block;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 6px;font-weight:600;
+  }
+  .field{margin-bottom:16px;}
+  input[type=text],input[type=password],textarea{
+    width:100%;background:var(--bg-elevated);border:1px solid var(--line);color:var(--text);
+    padding:11px 12px;border-radius:3px;font-size:15px;font-family:'Rajdhani',sans-serif;font-weight:500;
+    outline:none;transition:border-color .15s;
+  }
+  textarea{resize:vertical;min-height:70px;line-height:1.5;}
+  input:focus,textarea:focus{border-color:var(--nitro-orange);}
+
+  .btn{
+    width:100%;background:linear-gradient(180deg,var(--nitro-yellow),var(--nitro-orange-dark));
+    color:#1a0d00;border:none;padding:12px 14px;border-radius:3px;font-weight:700;font-size:14.5px;
+    cursor:pointer;letter-spacing:0.03em;font-family:'Rajdhani',sans-serif;text-transform:uppercase;
+    transition:filter .15s, transform .15s;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn:active{transform:translateY(1px);}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text);text-transform:none;font-weight:600;}
+  .btn.ghost:hover{border-color:var(--nitro-orange);}
+  .btn.small{width:auto;padding:7px 12px;font-size:13px;}
+  .btn.danger{background:linear-gradient(180deg,#e0685c,var(--danger));color:#fff;}
+
+  .switcher{margin-top:22px;text-align:center;font-size:13.5px;color:var(--muted);}
+  .switcher a{color:var(--nitro-yellow);text-decoration:none;font-weight:700;cursor:pointer;}
+  .switcher a:hover{text-decoration:underline;}
+
+  .msg{font-size:13px;padding:9px 12px;border-radius:3px;margin-bottom:16px;border:1px solid;line-height:1.5;font-weight:500;}
+  .msg.error{background:rgba(224,71,58,0.12);border-color:rgba(224,71,58,0.4);color:#f0968c;}
+  .msg.ok{background:rgba(62,207,122,0.1);border-color:rgba(62,207,122,0.35);color:#8de6ae;}
+  .msg.info{background:rgba(255,204,0,0.08);border-color:rgba(255,204,0,0.3);color:var(--nitro-yellow);}
+  .hidden{display:none !important;}
+
+  .dash{width:100%;max-width:860px;}
+  .dash-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px;flex-wrap:wrap;gap:12px;}
+  .dash-head .who{font-size:13px;color:var(--muted);}
+  .dash-head .who b{color:var(--text);}
+  .role-pill{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;
+    text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-left:8px;vertical-align:middle;
+  }
+  .role-pill.owner{background:rgba(255,204,0,0.14);color:var(--nitro-yellow);border:1px solid rgba(255,204,0,0.4);}
+  .role-pill.member{background:rgba(62,207,122,0.14);color:#8de6ae;border:1px solid rgba(62,207,122,0.35);}
+
+  .tabs{display:flex;gap:6px;margin-bottom:20px;border-bottom:1px solid var(--line);}
+  .tab{padding:10px 16px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;user-select:none;text-transform:uppercase;letter-spacing:0.03em;}
+  .tab.active{color:var(--nitro-yellow);border-color:var(--nitro-orange);}
+  .panel{background:var(--bg-card);border:1px solid var(--line);border-radius:4px;padding:24px;}
+  .panel h3{font-family:'Orbitron',sans-serif;font-size:15px;margin:0 0 4px;letter-spacing:0.03em;}
+  .panel .desc{font-size:13px;color:var(--muted);margin:0 0 18px;}
+
+  table{width:100%;border-collapse:collapse;font-size:14.5px;}
+  th{text-align:left;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);font-weight:700;}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  .rank{font-family:'IBM Plex Mono',monospace;color:var(--nitro-yellow-dim);font-weight:600;}
+  .rank.r1{color:var(--nitro-yellow);}
+  td input, .inline-input{width:100%;background:var(--bg-elevated);border:1px solid var(--line);color:var(--text);padding:6px 8px;border-radius:3px;font-size:14px;font-family:'Rajdhani',sans-serif;}
+  .row-actions{display:flex;gap:6px;}
+  .icon-btn{background:transparent;border:1px solid var(--line);color:var(--muted);width:28px;height:28px;border-radius:3px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .icon-btn:hover{border-color:var(--nitro-orange);color:var(--nitro-yellow);}
+  .add-row{margin-top:14px;display:flex;gap:8px;}
+  .wpm-val{font-family:'IBM Plex Mono',monospace;color:var(--nitro-orange);font-weight:600;}
+
+  .app-card{border:1px solid var(--line);border-radius:3px;padding:14px 16px;margin-bottom:10px;background:var(--bg-elevated);}
+  .app-card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .app-card .uname{font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--nitro-yellow);font-size:13.5px;}
+  .app-card .why{font-size:13.5px;color:var(--text);line-height:1.5;margin:6px 0 10px;font-weight:500;}
+  .app-card .actions{display:flex;gap:8px;}
+  .empty{color:var(--muted);font-size:13.5px;text-align:center;padding:30px 10px;}
+
+  .event-card{border:1px solid var(--line);border-radius:3px;padding:14px 16px;margin-bottom:10px;background:var(--bg-elevated);display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .event-card .date{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--nitro-yellow-dim);letter-spacing:0.06em;white-space:nowrap;padding-top:2px;}
+  .event-card .title{font-weight:700;font-size:14.5px;margin-bottom:3px;}
+  .event-card .desc-txt{font-size:13px;color:var(--muted);line-height:1.5;font-weight:500;}
+  .event-form{display:grid;grid-template-columns:1fr 140px;gap:10px;margin-bottom:10px;}
+  .event-form textarea{grid-column:1/-1;}
+  .event-form .btn{grid-column:1/-1;}
+
+  .signature{margin-top:44px;opacity:0.55;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);text-align:center;}
+  .status-badge{font-size:10.5px;padding:2px 8px;border-radius:20px;letter-spacing:0.06em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;}
+  .status-badge.pending{background:rgba(255,204,0,0.12);color:var(--nitro-yellow);}
+</style>
+</head>
+<body>
+
+<div class="brandmark" style="font-size:52px;line-height:1;text-align:center;">🏎️</div>
+<div class="team-tag">TEAM TAG · [F1F4ST]</div>
+<h1 class="wordmark">F1F4ST</h1>
+<div class="tagline">Nitro Type Racing Crew — Members Portal</div>
+<div class="team-link">Live team page: <a href="https://www.nitrotype.com/team/F1F4ST" target="_blank" rel="noopener">nitrotype.com/team/F1F4ST</a></div>
+
+<!-- LOGIN -->
+<div class="card" id="screen-login">
+  <h2>Member sign in</h2>
+  <p class="sub">Enter your crew credentials to access the garage.</p>
+  <div id="login-msg"></div>
+  <div class="field">
+    <label>Username</label>
+    <input type="text" id="login-user" autocomplete="username">
+  </div>
+  <div class="field">
+    <label>Password</label>
+    <input type="password" id="login-pass" autocomplete="current-password">
+  </div>
+  <button class="btn" onclick="handleLogin()">Sign in</button>
+  <div class="switcher">New member? <a onclick="showScreen('signup')">Create Account</a></div>
+</div>
+
+<!-- SIGNUP -->
+<div class="card hidden" id="screen-signup">
+  <h2>Join F1F4ST</h2>
+  <p class="sub">Applications go straight to the team owner for review.</p>
+  <div id="signup-msg"></div>
+  <div class="field">
+    <label>Choose a username</label>
+    <input type="text" id="signup-user">
+  </div>
+  <div class="field">
+    <label>Choose a password</label>
+    <input type="password" id="signup-pass">
+  </div>
+  <div class="field">
+    <label>Why do you want to race with us?</label>
+    <textarea id="signup-msg-field" placeholder="Your average WPM, how you found the team, anything else..."></textarea>
+  </div>
+  <button class="btn" onclick="handleSignup()">Send application</button>
+  <div class="switcher">Already a member? <a onclick="showScreen('login')">Sign in</a></div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dash hidden" id="screen-dash">
+  <div class="dash-head">
+    <div class="who">Signed in as <b id="who-name"></b><span class="role-pill" id="who-role"></span></div>
+    <button class="btn ghost small" onclick="logout()">Sign out</button>
+  </div>
+  <div class="tabs" id="tabs"></div>
+
+  <div class="panel" id="panel-leaderboard">
+    <h3>Team Leaderboard</h3>
+    <p class="desc" id="lb-desc">Top racers by WPM.</p>
+    <table>
+      <thead><tr><th style="width:50px">Rank</th><th>Racer</th><th style="width:100px">WPM</th><th id="lb-th-actions" style="width:70px"></th></tr></thead>
+      <tbody id="lb-body"></tbody>
+    </table>
+    <div class="add-row hidden" id="lb-add-row">
+      <input type="text" id="lb-new-name" placeholder="Racer name" class="inline-input" style="flex:2;">
+      <input type="text" id="lb-new-score" placeholder="WPM" class="inline-input" style="flex:1;">
+      <button class="btn small" onclick="addLeaderboardRow()">Add racer</button>
+    </div>
+  </div>
+
+  <div class="panel hidden" id="panel-applications">
+    <h3>Pending applications</h3>
+    <p class="desc">Racers who've asked to join F1F4ST.</p>
+    <div id="apps-list"></div>
+  </div>
+
+  <div class="panel hidden" id="panel-events">
+    <h3>Upcoming events</h3>
+    <p class="desc" id="ev-desc">Races, tournaments, and team meetups.</p>
+    <div class="event-form hidden" id="ev-add-form">
+      <input type="text" id="ev-title" placeholder="Event title" class="inline-input">
+      <input type="text" id="ev-date" placeholder="Date (e.g. Aug 14)" class="inline-input">
+      <textarea id="ev-desc-field" placeholder="Event details" class="inline-input"></textarea>
+      <button class="btn small" onclick="addEvent()">Add event</button>
+    </div>
+    <div id="events-list"></div>
+  </div>
+</div>
+
+<div class="signature">F1F4ST · full grinding, full team</div>
+
+<script>
+const OWNER_USER = "TheFlameKnight";
+const OWNER_PASS = "theflameknightf14st";
+const K_ACCOUNTS = "f1f4st_accounts";
+const K_LEADERBOARD = "f1f4st_leaderboard";
+const K_EVENTS = "f1f4st_events";
+
+let session = null;
+let activeTab = 'leaderboard';
+
+function showScreen(name){
+  document.getElementById('screen-login').classList.toggle('hidden', name!=='login');
+  document.getElementById('screen-signup').classList.toggle('hidden', name!=='signup');
+  document.getElementById('screen-dash').classList.toggle('hidden', name!=='dash');
+  document.getElementById('login-msg').innerHTML = '';
+  document.getElementById('signup-msg').innerHTML = '';
+}
+function msgHtml(type, text){ return `<div class="msg ${type}">${text}</div>`; }
+
+async function getAccounts(){
+  try{ const r = await window.storage.get(K_ACCOUNTS, true); return r ? JSON.parse(r.value) : {}; }catch(e){ return {}; }
+}
+async function saveAccounts(a){ await window.storage.set(K_ACCOUNTS, JSON.stringify(a), true); }
+async function getLeaderboard(){
+  try{ const r = await window.storage.get(K_LEADERBOARD, true); return r ? JSON.parse(r.value) : []; }catch(e){ return []; }
+}
+async function saveLeaderboard(lb){ await window.storage.set(K_LEADERBOARD, JSON.stringify(lb), true); }
+async function getEvents(){
+  try{ const r = await window.storage.get(K_EVENTS, true); return r ? JSON.parse(r.value) : []; }catch(e){ return []; }
+}
+async function saveEvents(ev){ await window.storage.set(K_EVENTS, JSON.stringify(ev), true); }
+
+async function handleLogin(){
+  const user = document.getElementById('login-user').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const msgEl = document.getElementById('login-msg');
+  msgEl.innerHTML = '';
+  if(!user || !pass){ msgEl.innerHTML = msgHtml('error','Enter both a username and password.'); return; }
+
+  if(user === OWNER_USER && pass === OWNER_PASS){
+    session = {username: user, role: 'owner'};
+    enterDashboard();
+    return;
+  }
+  const accounts = await getAccounts();
+  const acc = accounts[user];
+  if(!acc || acc.password !== pass){ msgEl.innerHTML = msgHtml('error','Incorrect username or password.'); return; }
+  if(acc.status === 'pending'){ msgEl.innerHTML = msgHtml('info','Your application is still pending review by the team owner.'); return; }
+  if(acc.status === 'denied'){ msgEl.innerHTML = msgHtml('error','Your application was not approved.'); return; }
+  session = {username: user, role: 'member'};
+  enterDashboard();
+}
+
+async function handleSignup(){
+  const user = document.getElementById('signup-user').value.trim();
+  const pass = document.getElementById('signup-pass').value;
+  const why = document.getElementById('signup-msg-field').value.trim();
+  const msgEl = document.getElementById('signup-msg');
+  msgEl.innerHTML = '';
+  if(!user || !pass){ msgEl.innerHTML = msgHtml('error','Choose a username and password.'); return; }
+  if(user === OWNER_USER){ msgEl.innerHTML = msgHtml('error','That username is reserved.'); return; }
+  const accounts = await getAccounts();
+  if(accounts[user]){ msgEl.innerHTML = msgHtml('error','That username is already taken.'); return; }
+  accounts[user] = { password: pass, message: why || '(no message provided)', status: 'pending', appliedAt: new Date().toISOString() };
+  await saveAccounts(accounts);
+  document.getElementById('signup-user').value='';
+  document.getElementById('signup-pass').value='';
+  document.getElementById('signup-msg-field').value='';
+  msgEl.innerHTML = msgHtml('ok','Application sent to the team owner. Sign in once approved.');
+}
+
+function logout(){
+  session = null;
+  document.getElementById('login-user').value='';
+  document.getElementById('login-pass').value='';
+  showScreen('login');
+}
+
+async function enterDashboard(){
+  document.getElementById('who-name').textContent = session.username;
+  const rolePill = document.getElementById('who-role');
+  rolePill.textContent = session.role;
+  rolePill.className = 'role-pill ' + session.role;
+
+  const tabsEl = document.getElementById('tabs');
+  if(session.role === 'owner'){
+    tabsEl.innerHTML = `
+      <div class="tab" data-tab="leaderboard">Leaderboard</div>
+      <div class="tab" data-tab="applications">Applications</div>
+      <div class="tab" data-tab="events">Events</div>`;
+    document.getElementById('lb-desc').textContent = 'Edit WPM standings — visible to every racer.';
+    document.getElementById('lb-add-row').classList.remove('hidden');
+    document.getElementById('ev-desc').textContent = 'Add or remove races, tournaments, and meetups.';
+    document.getElementById('ev-add-form').classList.remove('hidden');
+  } else {
+    tabsEl.innerHTML = `
+      <div class="tab" data-tab="leaderboard">Leaderboard</div>
+      <div class="tab" data-tab="events">Events</div>`;
+    document.getElementById('lb-desc').textContent = 'Top racers by WPM.';
+    document.getElementById('lb-add-row').classList.add('hidden');
+    document.getElementById('ev-desc').textContent = 'Races, tournaments, and team meetups.';
+    document.getElementById('ev-add-form').classList.add('hidden');
+  }
+  tabsEl.querySelectorAll('.tab').forEach(t=>{ t.onclick = ()=> switchTab(t.dataset.tab); });
+  switchTab('leaderboard');
+  showScreen('dash');
+  await Promise.all([renderLeaderboard(), renderApplications(), renderEvents()]);
+}
+
+function switchTab(name){
+  activeTab = name;
+  document.querySelectorAll('#tabs .tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+  document.getElementById('panel-leaderboard').classList.toggle('hidden', name!=='leaderboard');
+  document.getElementById('panel-applications').classList.toggle('hidden', name!=='applications');
+  document.getElementById('panel-events').classList.toggle('hidden', name!=='events');
+}
+
+async function renderLeaderboard(){
+  const lb = (await getLeaderboard()).slice().sort((a,b)=> Number(b.score)-Number(a.score));
+  const body = document.getElementById('lb-body');
+  const isOwner = session && session.role === 'owner';
+  if(lb.length === 0){ body.innerHTML = `<tr><td colspan="4" class="empty">No WPM stats logged yet.</td></tr>`; return; }
+  body.innerHTML = lb.map((row,i)=>{
+    const rankClass = i===0 ? 'rank r1' : 'rank';
+    if(isOwner){
+      return `<tr>
+        <td class="${rankClass}">#${i+1}</td>
+        <td><input type="text" value="${escapeAttr(row.name)}" onchange="updateLbField('${row.id}','name',this.value)"></td>
+        <td><input type="text" value="${escapeAttr(row.score)}" onchange="updateLbField('${row.id}','score',this.value)"></td>
+        <td><div class="row-actions"><button class="icon-btn" onclick="deleteLbRow('${row.id}')" title="Remove">✕</button></div></td>
+      </tr>`;
+    }
+    return `<tr>
+      <td class="${rankClass}">#${i+1}</td>
+      <td>${escapeHtml(row.name)}</td>
+      <td class="wpm-val">${escapeHtml(String(row.score))}</td>
+      <td></td>
+    </tr>`;
+  }).join('');
+}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeAttr(s){ return escapeHtml(s); }
+
+async function addLeaderboardRow(){
+  const nameEl = document.getElementById('lb-new-name');
+  const scoreEl = document.getElementById('lb-new-score');
+  const name = nameEl.value.trim();
+  const score = scoreEl.value.trim();
+  if(!name || score === '') return;
+  const lb = await getLeaderboard();
+  lb.push({id: 'm_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), name, score});
+  await saveLeaderboard(lb);
+  nameEl.value=''; scoreEl.value='';
+  renderLeaderboard();
+}
+async function updateLbField(id, field, value){
+  const lb = await getLeaderboard();
+  const row = lb.find(r=>r.id===id);
+  if(row){ row[field] = value; await saveLeaderboard(lb); renderLeaderboard(); }
+}
+async function deleteLbRow(id){
+  let lb = await getLeaderboard();
+  lb = lb.filter(r=>r.id!==id);
+  await saveLeaderboard(lb);
+  renderLeaderboard();
+}
+
+async function renderApplications(){
+  if(!session || session.role !== 'owner') return;
+  const accounts = await getAccounts();
+  const pending = Object.entries(accounts).filter(([,a])=>a.status==='pending');
+  const list = document.getElementById('apps-list');
+  if(pending.length===0){ list.innerHTML = `<div class="empty">No pending applications.</div>`; return; }
+  list.innerHTML = pending.map(([user,a])=>`
+    <div class="app-card">
+      <div class="top">
+        <span class="uname">${escapeHtml(user)}</span>
+        <span class="status-badge pending">pending</span>
+      </div>
+      <div class="why">${escapeHtml(a.message)}</div>
+      <div class="actions">
+        <button class="btn small" onclick="decideApplication('${user}','approved')">Approve</button>
+        <button class="btn small danger" onclick="decideApplication('${user}','denied')">Deny</button>
+      </div>
+    </div>
+  `).join('');
+}
+async function decideApplication(user, status){
+  const accounts = await getAccounts();
+  if(accounts[user]){ accounts[user].status = status; await saveAccounts(accounts); }
+  renderApplications();
+}
+
+async function renderEvents(){
+  const events = (await getEvents()).slice().sort((a,b)=> (a.createdAt||0)-(b.createdAt||0));
+  const list = document.getElementById('events-list');
+  const isOwner = session && session.role === 'owner';
+  if(events.length===0){ list.innerHTML = `<div class="empty">No upcoming events yet.</div>`; return; }
+  list.innerHTML = events.map(ev=>`
+    <div class="event-card">
+      <div>
+        <div class="title">${escapeHtml(ev.title)}</div>
+        <div class="desc-txt">${escapeHtml(ev.desc||'')}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="date">${escapeHtml(ev.date||'')}</span>
+        ${isOwner ? `<button class="icon-btn" onclick="deleteEvent('${ev.id}')" title="Remove">✕</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+async function addEvent(){
+  const title = document.getElementById('ev-title').value.trim();
+  const date = document.getElementById('ev-date').value.trim();
+  const desc = document.getElementById('ev-desc-field').value.trim();
+  if(!title) return;
+  const events = await getEvents();
+  events.push({id:'e_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), title, date, desc, createdAt: Date.now()});
+  await saveEvents(events);
+  document.getElementById('ev-title').value='';
+  document.getElementById('ev-date').value='';
+  document.getElementById('ev-desc-field').value='';
+  renderEvents();
+}
+async function deleteEvent(id){
+  let events = await getEvents();
+  events = events.filter(e=>e.id!==id);
+  await saveEvents(events);
+  renderEvents();
+}
+
+showScreen('login');
+</script>
+</body>
+</html>
