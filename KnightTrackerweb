@@ -1,4 +1,12 @@
-<!Doctype html>
-<html lang ="en"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Knight Tracker</title>
+</head>
+<body>
 
-<h1>'Knight Tracker'<h1>
+    <h1>Knight Tracker</h1>
+
+</body>
+</html>
