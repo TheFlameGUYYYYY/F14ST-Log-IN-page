@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Knight Tracker</title>
+    <style>
+        body {
+            background-color: #222222;
+            color: #FF7F00; /* Added to keep text readable */
+        }
+    </style>
 </head>
 <body>
 
